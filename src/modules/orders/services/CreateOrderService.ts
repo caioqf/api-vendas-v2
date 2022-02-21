@@ -1,9 +1,9 @@
 import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
-import Order from '../typeorm/entities/Order';
-import OrdersRepository from '../typeorm/repositories/OrdersRepository';
-import CustomerRepository from '../../customers/typeorm/repositories/CustomerRepository';
-import {ProductRepository} from '../../products/typeorm/repositories/ProductsRepositoriy';
+import Order from '../infra/typeorm/entities/Order';
+import OrdersRepository from '../infra/typeorm/repositories/OrdersRepository';
+import CustomerRepository from '../../customers/infra/typeorm/repositories/CustomerRepository';
+import {ProductRepository} from '../../products/infra/typeorm/repositories/ProductsRepositoriy';
 
 
 

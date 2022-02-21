@@ -5,7 +5,7 @@
   "author": "Caio <caio8200@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/http/server.ts",
+    "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/infra/http/server.ts",
     "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
   },
   "devDependencies": {
@@ -38,6 +38,7 @@
     "multer": "^1.4.4",
     "nodemailer": "^6.7.2",
     "pg": "^8.7.3",
+    "rate-limiter-flexible": "^2.3.6",
     "redis": "^4.0.3",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.41"

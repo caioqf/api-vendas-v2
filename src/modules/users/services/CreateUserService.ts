@@ -1,6 +1,6 @@
 import { getCustomRepository } from "typeorm";
-import { UserRepository } from "../typeorm/repositories/UsersRepository";
-import User from "../typeorm/entities/User";
+import { UserRepository } from "../infra/typeorm/repositories/UsersRepository";
+import User from "../infra/typeorm/entities/User";
 import AppError from "@shared/errors/AppError";
 import bcryptjs from 'bcryptjs'
 

@@ -1,6 +1,6 @@
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm"
-import { ProductRepository } from "../typeorm/repositories/ProductsRepositoriy"
+import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepositoriy"
 import RedisCache from '@shared/cache/RedisCache';
 
 
