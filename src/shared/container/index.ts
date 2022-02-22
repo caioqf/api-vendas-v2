@@ -6,15 +6,22 @@ import { IUserRepository } from '@modules/users/domain/repositories/IUserReposit
 import UserRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
 import '@modules/users/providers';
+import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
+import { IUserTokensRepository } from '@modules/users/domain/repositories/IUserTokensRepository';
 
 container.registerSingleton<ICustomersRepository>(
   'CustomerRepository',
   CustomerRepository,
   );
   
-  container.registerSingleton<IUserRepository>(
-    'UserRepository',
-    UserRepository,
+container.registerSingleton<IUserRepository>(
+  'UserRepository',
+  UserRepository,
+  );
+  
+  container.registerSingleton<IUserTokensRepository>(
+    'UserTokensRepository',
+    UserTokensRepository,
   );
 
 // container.registerSingleton<IProductsRepository>(
@@ -27,7 +34,3 @@ container.registerSingleton<ICustomersRepository>(
 //   OrdersRepository,
 // );
 
-// container.registerSingleton<IUserTokensRepository>(
-//   'UserTokensRepository',
-//   UserTokensRepository,
-// );
