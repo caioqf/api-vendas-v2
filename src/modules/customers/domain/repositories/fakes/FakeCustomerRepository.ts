@@ -36,8 +36,6 @@ export default class FakeCustomerRepository implements ICustomersRepository{
 
   public async remove({id}: IDeleteCustomer): Promise<void> {}
 
-
-
   public async save(customer: Customer): Promise<Customer> {
     Object.assign(this.customers, customer);
 

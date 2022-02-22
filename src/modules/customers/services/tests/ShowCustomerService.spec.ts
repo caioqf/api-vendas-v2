@@ -10,7 +10,6 @@ describe('ShowCustomer', () => {
 
   let fakeCustomersRepository: FakeCustomerRepository;
   let showCustomer: ShowCustomerService; 
-  let createCustomer: CreateCustomerService;
 
 
   const fakeCustomer = {
@@ -24,7 +23,6 @@ describe('ShowCustomer', () => {
   beforeEach(() => {
     fakeCustomersRepository = new FakeCustomerRepository();
     showCustomer = new ShowCustomerService(fakeCustomersRepository);
-    createCustomer = new CreateCustomerService(fakeCustomersRepository);
 
   });
 
