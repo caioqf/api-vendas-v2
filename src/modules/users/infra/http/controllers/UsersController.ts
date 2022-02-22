@@ -22,7 +22,7 @@ export default class UsersController {
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;  
     
-    const deleteUser = new DeleteUserService;
+    const deleteUser = container.resolve(DeleteUserService);
 
     await deleteUser.execute({id});
 
@@ -48,21 +48,28 @@ export default class UsersController {
   public async show(req: Request, res: Response): Promise<Response> {
 
     const showUser = container.resolve(ShowUserService);
-    const user_id = req.user.id;
+    const id = req.user.id;
     
-    const user = await showUser.execute({ user_id });
+    const user = await showUser.execute({ id });
 
     return res.json(instanceToInstance(user));
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
 
-    const user_id = req.user.id;
+    const user_id = req.params.id;
+    
     const { name, email, password, old_password } = req.body;
 
     const updateUser = container.resolve(UpdateUserService);
 
-    const updatedUserResponse = await updateUser.execute({user_id, name, email, password, old_password});
+    const updatedUserResponse = await updateUser.execute({
+      user_id,
+      name,
+      email,
+      password,
+      old_password
+    });
 
     return res.json(instanceToInstance(updatedUserResponse))
   }

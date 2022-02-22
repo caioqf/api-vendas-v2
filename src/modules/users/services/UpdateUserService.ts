@@ -1,29 +1,29 @@
 import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
-import User from "../infra/typeorm/entities/User";
-import { UserRepository } from "../infra/typeorm/repositories/UsersRepository";
-import bcryptjs from 'bcryptjs'
+import { inject, injectable } from "tsyringe";
+import { IUserRepository } from "../domain/repositories/IUserRepository";
+import { IHashProvider } from "../providers/models/IHashProvider";
+import { IUpdateUser } from "../domain/models/IUpdateUser";
+import { IUser } from "../domain/models/IUser";
 
-interface IRequest {
-  user_id: string;
-  name: string;
-  email: string;
-  password?: string;
-  old_password?: string;
-}
 
+@injectable()
 class UpdateUserService {
-  public async execute({user_id, name, email, password, old_password}: IRequest): Promise<User>{
+  constructor(
+    @inject('UserRepository')
+    private userRepository: IUserRepository,
+    @inject('HashProvider')
+    private hashProvider: IHashProvider) {}
   
-    const userRepository = getCustomRepository(UserRepository);
+  
+  public async execute({user_id, name, email, password, old_password}: IUpdateUser): Promise<IUser>{
 
-    const user = await userRepository.findOne(user_id)
+    const user = await this.userRepository.findById(user_id)
     
     if(!user){
       throw new AppError('User not found.')
     }
 
-    const userEmailExists = await userRepository.findByEmail(email);
+    const userEmailExists = await this.userRepository.findByEmail(email);
 
     if (userEmailExists && userEmailExists.id != user_id){
       throw new AppError('Email already in use.');
@@ -35,20 +35,21 @@ class UpdateUserService {
 
     if(password && old_password){
       //testa senha antiga é compativel com a passada na request
-       const testPassword = await bcryptjs.compare(old_password, user.password);
+       const testPassword = this.hashProvider.compareHash(old_password, user.password);
 
        if(!testPassword){
         throw new AppError('Invalid credentials.', 403);
       }
-      //criptografa antes de salvar
-      const hashed = await bcryptjs.hash(password, 10)
+
+      //criptografa antes de salvar através da dependência injetada
+      const hashed = await this.hashProvider.generateHash(password)
       user.password = hashed;
     }
 
     user.name = name;
     user.email = email;
     
-    await userRepository.save(user);
+    await this.userRepository.save(user);
 
     return user;
   }
