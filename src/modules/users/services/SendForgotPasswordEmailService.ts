@@ -1,30 +1,30 @@
-import { getCustomRepository } from "typeorm";
 import AppError from "@shared/errors/AppError";
-import { UserRepository } from "../infra/typeorm/repositories/UsersRepository";
-import UserTokensRepository from "../infra/typeorm/repositories/UserTokensRepository";
 import EtherealMail from '@config/mail/EtherealMail';
 import path from 'path';
+import { inject, injectable } from "tsyringe";
+import { IUserRepository } from "../domain/repositories/IUserRepository";
+import { IUserTokensRepository } from "../domain/repositories/IUserTokensRepository";
+import { ISendForgotPasswordEmail } from "../domain/models/ISendForgotPasswordEmail";
 
 
-interface IRequest {
-  email: string;
-}
-
+@injectable()
 class SendForgotPasswordEmailService {
-  public async execute({email}: IRequest): Promise<void> {
+  constructor(
+    @inject('UserRepository')
+    private userRepository: IUserRepository,
 
-    const usersRepository = getCustomRepository(UserRepository);
-    const userTokenRepository = getCustomRepository(UserTokensRepository);
+    @inject('UserTokensRepository')
+    private userTokenRepository: IUserTokensRepository) {}
 
-    const user = await usersRepository.findByEmail(email);
-
+  public async execute({email}: ISendForgotPasswordEmail): Promise<void> {
+    
+    const user = await this.userRepository.findByEmail(email)
+    
     if(!user){
       throw new AppError('Invalid email address.');
     }
     
-    // console.log(user);
-    
-    const { token } = await userTokenRepository.generate(user.id);
+    const token = await this.userTokenRepository.generate(user.id)
 
     const template = path.resolve(
       __dirname,
@@ -42,7 +42,7 @@ class SendForgotPasswordEmailService {
         file: template,
         variables: {
           name: user.name,
-          token: token, 
+          token: `${token}`,
           link: `${process.env.APP_WEB_URL}/reset_password?token=${token}`
         }
       }

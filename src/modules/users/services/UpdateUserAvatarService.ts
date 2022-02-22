@@ -1,22 +1,23 @@
 import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
 import User from "../infra/typeorm/entities/User";
-import { UserRepository } from "../infra/typeorm/repositories/UsersRepository";
 import path from 'path';
 import uploadConfig from '@config/upload';
 import fs from 'fs';
+import { inject, injectable } from "tsyringe";
+import { IUserRepository } from "../domain/repositories/IUserRepository";
+import { IUpdateUserAvatar } from "../domain/models/IUpdateUserAvatar";
 
 
-interface IRequest {
-  avatar_file: string;
-  user_id: string;
-}
-
+@injectable()
 class UpdateUserAvatarService {
-  public async execute({avatar_file, user_id}: IRequest): Promise<User> {
-    const usersRepo = getCustomRepository(UserRepository);
+  constructor(
+    @inject('UserRepository')
+    private userRepository: IUserRepository){}
 
-    const user = await usersRepo.findById(user_id);
+
+  public async execute({avatar_file, user_id}: IUpdateUserAvatar): Promise<User> {
+
+    const user = await this.userRepository.findById(user_id);
 
     if(!user){
       throw new AppError('Unauthorized', 401);
@@ -34,7 +35,7 @@ class UpdateUserAvatarService {
     
     user.avatar = avatar_file;
 
-    await usersRepo.save(user);
+    await this.userRepository.save(user);
 
     return user;
   }
