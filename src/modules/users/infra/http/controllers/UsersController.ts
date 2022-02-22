@@ -11,7 +11,7 @@ import { container } from "tsyringe";
 export default class UsersController {
   //Get all users
   public async index(req: Request, res: Response): Promise<Response>{
-    const listUsers = new ListUserService;
+    const listUsers = container.resolve(ListUserService);
 
     const users = await listUsers.execute();
     
@@ -46,20 +46,21 @@ export default class UsersController {
 
   //Show single user
   public async show(req: Request, res: Response): Promise<Response> {
-    const showUser = new ShowUserService();
+
+    const showUser = container.resolve(ShowUserService);
     const user_id = req.user.id;
     
-    console.log(user_id);
     const user = await showUser.execute({ user_id });
 
     return res.json(instanceToInstance(user));
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
+
     const user_id = req.user.id;
     const { name, email, password, old_password } = req.body;
 
-    const updateUser = new UpdateUserService;
+    const updateUser = container.resolve(UpdateUserService);
 
     const updatedUserResponse = await updateUser.execute({user_id, name, email, password, old_password});
 
