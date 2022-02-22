@@ -1,4 +1,5 @@
 import { ICreateCustomer } from "@modules/customers/domain/models/ICreateCustomer";
+import { IDeleteCustomer } from "@modules/customers/domain/models/IDeleteCustomer";
 import { ICustomersRepository } from "@modules/customers/domain/repositories/ICustomersRepository";
 import { getRepository, Repository } from "typeorm";
 import Customer from '../entities/Customer';
@@ -10,6 +11,10 @@ export default class CustomerRepository implements ICustomersRepository{
   
   constructor() {
     this.ormRepository = getRepository(Customer);
+  }
+
+  public async remove(customer: Customer): Promise<void> {
+    await this.ormRepository.remove(customer);
   }
 
   public async create({name, email}: ICreateCustomer): Promise<Customer> {

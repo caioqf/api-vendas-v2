@@ -20,7 +20,7 @@ export default class CustomersController {
   public async delete(req: Request, res: Response): Promise<Response> {
     const { id } = req.params;  
     
-    const deleteCustomer = new DeleteCustomerService;
+    const deleteCustomer = container.resolve(DeleteCustomerService);
 
     await deleteCustomer.execute({id});
 
