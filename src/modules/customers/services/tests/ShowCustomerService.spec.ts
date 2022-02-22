@@ -2,7 +2,6 @@ import 'reflect-metadata'
 import AppError from '@shared/errors/AppError';
 import ShowCustomerService from '../ShowCustomerService';
 import { v4 as uuid_v4 } from 'uuid';
-import CreateCustomerService from '../CreateCustomerService';
 import FakeCustomerRepository from "@modules/customers/domain/repositories/fakes/FakeCustomerRepository";
 
 

@@ -1,10 +1,9 @@
 import { inject, injectable } from "tsyringe";
+import { IListCustomers } from "../domain/models/IListCustomers";
 import { ICustomersRepository } from "../domain/repositories/ICustomersRepository";
-import Customer from "../infra/typeorm/entities/Customer";
-import CustomerRepository from "../infra/typeorm/repositories/CustomerRepository";
 
 
-@injectable
+@injectable()
 class ListCustomerService {
 
   constructor(
@@ -12,11 +11,11 @@ class ListCustomerService {
     private customersRepository: ICustomersRepository,
     ) {}
 
-  public async execute(): Promise<Customer[]> {
+  public async execute(): Promise<IListCustomers> {
 
-    const customer = await this.customersRepository.find();
+    const customers = await this.customersRepository.findAll();
 
-    return customer
+    return customers;
   }
 }
 

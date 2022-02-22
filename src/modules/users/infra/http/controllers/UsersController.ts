@@ -5,6 +5,7 @@ import ListUserService from "../../../services/ListUserService";
 import ShowUserService from "../../../services/ShowUserService";
 import UpdateUserService from "../../../services/UpdateUserService";
 import { instanceToInstance } from "class-transformer";
+import { container } from "tsyringe";
 
 
 export default class UsersController {
@@ -32,7 +33,7 @@ export default class UsersController {
   public async create(req: Request, res: Response): Promise<Response> {
     const { name, email, password } = req.body;
 
-    const createUser = new CreateUserService;
+    const createUser = container.resolve(CreateUserService);
 
     const user = await createUser.execute({ 
       name, 

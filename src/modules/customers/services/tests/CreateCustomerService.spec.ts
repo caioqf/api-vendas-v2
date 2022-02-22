@@ -22,7 +22,7 @@ describe('CreateCustomer', () => {
     expect(customer).toHaveProperty('id');
   });
 
-  it('should not be able to create new customer', async () => {
+  it('should not be able to create new customer with existnt email', async () => {
     await createCustomer.execute({
       name: 'douglas pena veiga araya faria borges',
       email: 'teste@gmail.com',

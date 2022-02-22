@@ -9,7 +9,8 @@ import { container } from 'tsyringe';
 export default class CustomersController {
 
   public async index(req: Request, res: Response): Promise<Response>{
-    const listCustomers = new ListCustomerService;
+    
+    const listCustomers = container.resolve(ListCustomerService)
 
     const customers = await listCustomers.execute();
     
@@ -43,7 +44,7 @@ export default class CustomersController {
 
   //Show single customer
   public async show(req: Request, res: Response): Promise<Response> {
-    const showCustomer = new ShowCustomerService();
+    const showCustomer = container.resolve(ShowCustomerService);
     const id = req.params.id;
     
     // console.log(customer_id);
@@ -56,7 +57,7 @@ export default class CustomersController {
     const { id } = req.params;
     const { name, email} = req.body;
 
-    const updateCustomer = new UpdateCustomerService;
+    const updateCustomer = container.resolve(UpdateCustomerService);
 
     const updatedCustomerResponse = await updateCustomer.execute({id, name, email});
 

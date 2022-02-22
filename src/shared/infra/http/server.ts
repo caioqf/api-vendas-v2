@@ -35,6 +35,7 @@ app.use(
   return res.status(500).json({
       status: 'error',
       message: 'Internal server error. Cod 00',
+      error: error
     });
     
   },

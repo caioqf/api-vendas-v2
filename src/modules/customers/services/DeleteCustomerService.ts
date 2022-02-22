@@ -1,9 +1,7 @@
 import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
-import { getCustomRepository } from "typeorm";
 import { IDeleteCustomer } from "../domain/models/IDeleteCustomer";
 import { ICustomersRepository } from "../domain/repositories/ICustomersRepository";
-import CustomerRepository from "../infra/typeorm/repositories/CustomerRepository";
 
 @injectable()
 class DeleteCustomerService {
@@ -12,7 +10,6 @@ class DeleteCustomerService {
   private customerRepository: ICustomersRepository) {}
 
   public async execute({id}: IDeleteCustomer): Promise<void> {
-    const customerRepository = getCustomRepository(CustomerRepository);
 
     const customer = await this.customerRepository.findById(id);
 

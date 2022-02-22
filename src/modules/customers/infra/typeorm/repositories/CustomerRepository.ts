@@ -1,11 +1,10 @@
 import { ICreateCustomer } from "@modules/customers/domain/models/ICreateCustomer";
-import { IDeleteCustomer } from "@modules/customers/domain/models/IDeleteCustomer";
 import { ICustomersRepository } from "@modules/customers/domain/repositories/ICustomersRepository";
 import { getRepository, Repository } from "typeorm";
 import Customer from '../entities/Customer';
 
 
-export default class CustomerRepository implements ICustomersRepository{
+export default class CustomerRepository implements ICustomersRepository {
 
   private ormRepository: Repository<Customer>;
   
@@ -18,7 +17,10 @@ export default class CustomerRepository implements ICustomersRepository{
   }
 
   public async create({name, email}: ICreateCustomer): Promise<Customer> {
-    const customer = this.ormRepository.create({name, email});
+    const customer = this.ormRepository.create({
+      name, 
+      email
+    });
     await this.ormRepository.save(customer);
     return customer;
   } 
@@ -48,13 +50,21 @@ export default class CustomerRepository implements ICustomersRepository{
   }
 
   public async findById(id: string): Promise<Customer | undefined> {
+      
       const user = await this.ormRepository.findOne({
           where: {
               id,
           }
       });
+
       return user;
   }
 
+  public async findAll(): Promise<Customer[] | undefined> {
+      
+    const customers = await this.ormRepository.find()
+      
+    return customers;
+  }
 
 }
