@@ -5,8 +5,6 @@ import FakeHashProvider from '@modules/users/providers/fakes/FakeHashProvider';
 import ResetPasswordService from '../ResetPasswordService';
 import CreateUserService from '../CreateUserService';
 import AppError from '@shared/errors/AppError';
-import { addHours, isAfter } from 'date-fns';
-import { resolve } from 'path/posix';
 
 
 describe('ResetPassword', () => {

@@ -34,8 +34,9 @@ class UpdateUserService {
     }
 
     if(password && old_password){
+
       //testa senha antiga é compativel com a passada na request
-       const testPassword = this.hashProvider.compareHash(old_password, user.password);
+       const testPassword = await this.hashProvider.compareHash(old_password, user.password);  
 
        if(!testPassword){
         throw new AppError('Invalid credentials.', 403);

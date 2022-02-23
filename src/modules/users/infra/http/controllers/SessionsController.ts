@@ -13,7 +13,7 @@ class SessionsController {
       email, 
       password
     });
-    return res.json(instanceToInstance(user));
+    return res.json(user);
   }
 }
 

@@ -4,7 +4,6 @@ import DeleteUserService from "../../../services/DeleteUserService";
 import ListUserService from "../../../services/ListUserService";
 import ShowUserService from "../../../services/ShowUserService";
 import UpdateUserService from "../../../services/UpdateUserService";
-import { instanceToInstance } from "class-transformer";
 import { container } from "tsyringe";
 
 
@@ -15,7 +14,7 @@ export default class UsersController {
 
     const users = await listUsers.execute();
     
-    return res.json(instanceToInstance(users))
+    return res.json(users)
   } 
 
   //Delete one user
@@ -41,7 +40,7 @@ export default class UsersController {
       password
     });
 
-    return res.json(instanceToInstance(user));
+    return res.json(user);
   }
 
   //Show single user
@@ -52,7 +51,7 @@ export default class UsersController {
     
     const user = await showUser.execute({ id });
 
-    return res.json(instanceToInstance(user));
+    return res.json(user);
   }
 
   public async update(req: Request, res: Response): Promise<Response> {
@@ -68,10 +67,10 @@ export default class UsersController {
       name,
       email,
       password,
-      old_password
+      old_password,
     });
 
-    return res.json(instanceToInstance(updatedUserResponse))
+    return res.json(updatedUserResponse)
   }
 
 }

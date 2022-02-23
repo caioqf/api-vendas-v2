@@ -12,12 +12,13 @@ export default class FakeUserRepository implements IUserRepository{
     return undefined;
   }
 
-  public async create({name, email}: ICreateUser): Promise<User> {
+  public async create({name, email, password}: ICreateUser): Promise<User> {
     const user = new User();
 
     user.id = uuid_v4();
     user.email= email;
     user.name = name;
+    user.password = password;
     
     this.users.push(user);
      
