@@ -1,5 +1,5 @@
 import { IUserTokensRepository } from "@modules/users/domain/repositories/IUserTokensRepository";
-import { EntityRepository, getRepository, Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import UserToken from "../entities/UserToken";
 
 

@@ -29,7 +29,6 @@ describe('UpdateCustomer', () => {
         expect(afterUpdateCustomer.email).toBe(recivedCustomer?.email)
     });
 
-    //TODO
     it('should not be able to update a inexistent customer', () => {
       expect(
           updateCustomer.execute({

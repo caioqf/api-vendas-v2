@@ -1,15 +1,10 @@
 import AppError from "@shared/errors/AppError";
 import { isAfter, addHours } from 'date-fns';
 import { inject, injectable } from "tsyringe";
+import { IResetPassword } from "../domain/models/IResetPassword";
 import { IUserRepository } from "../domain/repositories/IUserRepository";
 import { IUserTokensRepository } from "../domain/repositories/IUserTokensRepository";
 import { IHashProvider } from "../providers/models/IHashProvider";
-
-
-interface IRequest {
-  token: string;
-  password: string;
-}
 
 
 @injectable()
@@ -23,7 +18,7 @@ class ResetPasswordService {
     private hashProvider: IHashProvider
   ) {}
 
-  public async execute({token, password}: IRequest): Promise<void> {
+  public async execute({token, password}: IResetPassword): Promise<void> {
 
     const userToken = await this.userTokensRepository.findByToken(token);
 

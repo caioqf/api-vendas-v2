@@ -1,5 +1,6 @@
 import AppError from "@shared/errors/AppError";
 import { inject, injectable } from "tsyringe";
+import { IDeleteUser } from "../domain/models/IDeleteUser";
 import { IUserRepository } from "../domain/repositories/IUserRepository";
 
 
@@ -13,7 +14,7 @@ class DeleteUserService {
     @inject('UserRepository')
     private userRepository: IUserRepository) {}
 
-  public async execute({id}: IRequest): Promise<void> {
+  public async execute({id}: IDeleteUser): Promise<void> {
 
     const user = await this.userRepository.findById(id);
 
