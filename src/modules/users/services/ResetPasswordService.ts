@@ -27,7 +27,7 @@ class ResetPasswordService {
     }
 
     const user = await this.userRepository.findById(userToken.user_id);
-
+    
     if(!user){
       throw new AppError('User not found.')
     }
@@ -35,6 +35,12 @@ class ResetPasswordService {
     const tokenCreatedAt = userToken.createdAt
 
     const compareDate = addHours(tokenCreatedAt, 2);
+    
+    console.log('data original ', tokenCreatedAt);
+    
+
+    console.log('data expirada', compareDate);
+    
 
     if (isAfter(Date.now(), compareDate)){
       throw new AppError('Token expired.');
