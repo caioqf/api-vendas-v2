@@ -11,7 +11,7 @@ class CreateCustomerService {
     @inject('CustomerRepository')
     private customerRepository: ICustomersRepository) {}
 
-  public async execute({name, email}: ICreateCustomer): Promise<ICustomer> {
+    public async execute({name, email}: ICreateCustomer): Promise<ICustomer> {
 
     const emailExists = await this.customerRepository.findByEmail(email);
     

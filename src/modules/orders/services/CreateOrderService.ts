@@ -4,6 +4,8 @@ import Order from '../infra/typeorm/entities/Order';
 import OrdersRepository from '../infra/typeorm/repositories/OrdersRepository';
 import CustomerRepository from '../../customers/infra/typeorm/repositories/CustomerRepository';
 import {ProductRepository} from '../../products/infra/typeorm/repositories/ProductsRepositoriy';
+import { inject, injectable } from 'tsyringe';
+import { ICustomersRepository } from '@modules/customers/domain/repositories/ICustomersRepository';
 
 
 
@@ -17,13 +19,17 @@ interface IRequest {
   products: IProduct[];
 }
 
+@injectable()
 class CreateOrderService {
+  constructor(
+  @inject('CustomerRepository')
+  private customerRepository: ICustomersRepository ){}
+
   public async execute({ customer_id, products }: IRequest): Promise<Order> {
     const ordersRepository = getCustomRepository(OrdersRepository);
-    const customersRepository = getCustomRepository(CustomerRepository);
     const productsRepository = getCustomRepository(ProductRepository);
 
-    const customerExists = await customersRepository.findById(customer_id);
+    const customerExists = await this.customerRepository.findById(customer_id);
 
     if (!customerExists) {
       throw new AppError('Could not find any customer with the given id.');
@@ -76,8 +82,7 @@ class CreateOrderService {
     const updatedProductQuantity = order_products.map(product => ({
       id: product.product_id,
       quantity:
-        existsProducts.filter(p => p.id === product.product_id)[0].quantity -
-        product.quantity,
+        existsProducts.filter(p => p.id === product.product_id)[0].quantity - product.quantity
     }));
 
     await productsRepository.save(updatedProductQuantity);

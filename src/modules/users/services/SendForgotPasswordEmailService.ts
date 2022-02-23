@@ -24,7 +24,7 @@ class SendForgotPasswordEmailService {
       throw new AppError('Invalid email address.');
     }
     
-    const token = await this.userTokenRepository.generate(user.id)
+    const { token } = await this.userTokenRepository.generate(user.id)
 
     const template = path.resolve(
       __dirname,
@@ -42,7 +42,7 @@ class SendForgotPasswordEmailService {
         file: template,
         variables: {
           name: user.name,
-          token: `${token}`,
+          token: token,
           link: `${process.env.APP_WEB_URL}/reset_password?token=${token}`
         }
       }
