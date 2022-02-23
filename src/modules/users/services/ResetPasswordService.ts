@@ -20,7 +20,7 @@ class ResetPasswordService {
 
   public async execute({token, password}: IResetPassword): Promise<void> {
 
-    const userToken = await this.userTokensRepository.findByToken(token);
+    const userToken = await this.userTokensRepository.findByToken(token.token);
 
     if(!userToken){
       throw new AppError('User token does not exists.')

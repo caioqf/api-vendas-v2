@@ -33,10 +33,14 @@ describe('ResetPassword', () => {
           })
 
         const token = await fakeUserTokensRepository.generate(user.id)
-
+        
         await resetPassword.execute({
-            password: '',
+            password: '4321',
             token: token,
         })
+
+        const pass = user.password;
+        
+        expect(user.password).toBe('4321')
     })
 })

@@ -1,4 +1,6 @@
+import { IUserToken } from "./IUserToken";
+
 export interface IResetPassword {
-    token: string;
+    token: IUserToken;
     password: string;
 }
