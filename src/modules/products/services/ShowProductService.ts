@@ -1,5 +1,7 @@
 import AppError from "@shared/errors/AppError";
+import { inject, injectable } from "tsyringe";
 import { getCustomRepository } from "typeorm";
+import { IProductsRepository } from "../domain/repositories/IProductsRepository";
 import Product from "../infra/typeorm/entities/Product";
 import ProductRepository from "../infra/typeorm/repositories/ProductsRepositoriy";
 
@@ -7,11 +9,13 @@ interface IRequest {
   id: string;
 }
 
+@injectable()
 class ShowProductService {
-  public async execute({ id }: IRequest): Promise<Product | undefined> {
-    const productsReposotory = getCustomRepository(ProductRepository);
+  constructor(@inject('ProductsRepository') private productsRepository: IProductsRepository){}
 
-    const product = await productsReposotory.findOne(id);
+  public async execute({ id }: IRequest): Promise<Product | undefined> {
+
+    const product = await this.productsRepository.findById(id);
 
     if(!product){
       throw new AppError('Product not found.')
