@@ -1,13 +1,18 @@
 import { container } from 'tsyringe';
+import '@modules/users/providers';
 
 import { ICustomersRepository } from '@modules/customers/domain/repositories/ICustomersRepository';
 import CustomerRepository from '@modules/customers/infra/typeorm/repositories/CustomerRepository';
+
+import { IProductsRepository } from '@modules/products/domain/repositories/IProductsRepository';
+import ProductRepository from '@modules/products/infra/typeorm/repositories/ProductsRepositoriy';
+
 import { IUserRepository } from '@modules/users/domain/repositories/IUserRepository';
 import UserRepository from '@modules/users/infra/typeorm/repositories/UsersRepository';
 
-import '@modules/users/providers';
-import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
 import { IUserTokensRepository } from '@modules/users/domain/repositories/IUserTokensRepository';
+import UserTokensRepository from '@modules/users/infra/typeorm/repositories/UserTokensRepository';
+
 
 container.registerSingleton<ICustomersRepository>(
   'CustomerRepository',
@@ -24,10 +29,10 @@ container.registerSingleton<IUserRepository>(
     UserTokensRepository,
   );
 
-// container.registerSingleton<IProductsRepository>(
-//   'ProductsRepository',
-//   ProductsRepository,
-// );
+container.registerSingleton<IProductsRepository>(
+  'ProductsRepository',
+  ProductRepository,
+);
 
 // container.registerSingleton<IOrdersRepository>(
 //   'OrdersRepository',

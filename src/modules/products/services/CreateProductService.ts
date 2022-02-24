@@ -1,53 +1,33 @@
-import AppError from "@shared/errors/AppError";
-import { getCustomRepository } from "typeorm";
-import Product from "../infra/typeorm/entities/Product";
-import { ProductRepository } from "../infra/typeorm/repositories/ProductsRepositoriy";
-import RedisCache from '@shared/cache/RedisCache';
+import { EntityRepository, In, Repository } from 'typeorm';
+import Product from '../infra/typeorm/entities/Product';
 
-
-//A interface é uma forma de normear os tipos dentro de um objeto, nesse caso
-// todos os que serão utilizados dentro da classe/função
-interface IRequest {
-  name: string;
-  price: number;
-  quantity: number;
+interface IFindProducts {
+  id: string;
 }
 
-//Criar a classe que faz unicamente o que está descrito em seu Service, baseado na regra de negocio. No caso; criar um produto.
-class CreateProductService {
-  //Método 'execute'. O unico da classe, que vai fazer unicamente o que propõe o serviço.
-  public async execute({name, price, quantity}: IRequest): Promise<Product> {
-    
-
-
-    //Declarar o repositorio (custom) que vem com todos os métodos padão (e custom) para serem usados aqui
-    const productsReposotory = getCustomRepository(ProductRepository);
-    
-    //Usando a função criada no respositorio de Products pra achar o produto pelo nome
-    const productExists = await productsReposotory.findByName(name)
-
-    if(productExists){
-      throw new AppError('There is already one product with this name.');
-    }
-
-
-    
-    //Cria o produto com os parametros passados no 'execute'
-    const product = productsReposotory.create({
-      name,
-      price,
-      quantity,
+@EntityRepository(Product)
+class ProductRepository extends Repository<Product> {
+  public async findByName(name: string): Promise<Product | undefined> {
+    const product = this.findOne({
+      where: {
+        name,
+      },
     });
 
-    const redisCache = new RedisCache();
-    
-    await redisCache.invalidade("api-vendas-PRODUCT_LIST");
+    return product;
+  }
 
-    //Salva de fato no banco de dados com 'save'
-    await productsReposotory.save(product);
-    
-    return product
+  public async findAllByIds(products: IFindProducts[]): Promise<Product[]> {
+    const productIds = products.map(product => product.id);
+
+    const existentProducts = await this.find({
+      where: {
+        id: In(productIds),
+      },
+    });
+
+    return existentProducts;
   }
 }
 
-export default CreateProductService;
+export default ProductRepository;
