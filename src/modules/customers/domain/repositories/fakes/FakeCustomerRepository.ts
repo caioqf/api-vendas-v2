@@ -7,15 +7,7 @@ import { IDeleteCustomer } from '../../models/IDeleteCustomer';
 
 export default class FakeCustomerRepository implements ICustomersRepository{
 
-  private customers: Customer[] = [
-    {
-      id: "fake_uuid_v4",
-      email: "test@gmail.com",
-      name: 'caio',
-      createdAt: new Date,
-      updatedAt: new Date
-    }
-  ]
+  private customers: Customer[] = []
 
   
   public async findAll(): Promise< Customer[] | undefined> {

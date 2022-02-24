@@ -1,44 +1,40 @@
 import 'reflect-metadata'
 import AppError from '@shared/errors/AppError';
 import ShowCustomerService from '../ShowCustomerService';
-import { v4 as uuid_v4 } from 'uuid';
 import FakeCustomerRepository from "@modules/customers/domain/repositories/fakes/FakeCustomerRepository";
+import CreateCustomerService from '../CreateCustomerService';
 
 
 describe('ShowCustomer', () => {
 
   let fakeCustomersRepository: FakeCustomerRepository;
   let showCustomer: ShowCustomerService; 
-
-
-  const fakeCustomer = {
-    id: "fake_uuid_v4",
-    name: "caio",
-    email: "test@gmail.com",
-    createdAt: new Date,
-    updatedAt: new Date
-  }
+  let createCustomer: CreateCustomerService;
 
   beforeEach(() => {
     fakeCustomersRepository = new FakeCustomerRepository();
     showCustomer = new ShowCustomerService(fakeCustomersRepository);
+    createCustomer = new CreateCustomerService(fakeCustomersRepository);
 
   });
 
   it('should be able to show a costumer', async () => {
-     const customer = await showCustomer.execute(fakeCustomer);
+     const customer = await createCustomer.execute({
+       name: 'caio',
+       email: 'existo@gmail.com'
+     });
      
      expect(customer).toHaveProperty('id');
-     expect(customer.name).toBe(fakeCustomer.name);
-     expect(customer.email).toBe(fakeCustomer.email);
+     expect(customer.name).toBe(customer.name);
+     expect(customer.email).toBe(customer.email);
   })
 
 
   it('should not be able to show a costumer if not exists', async () => {
     expect(
       showCustomer.execute({
-        ...fakeCustomer, id: uuid_v4()
-      }),
+        id: 'naoexisto'
+      })
     ).rejects.toBeInstanceOf(AppError);
   })
 

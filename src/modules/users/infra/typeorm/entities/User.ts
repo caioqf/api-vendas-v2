@@ -2,7 +2,6 @@ import { Column, Entity, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import { Exclude, Expose } from 'class-transformer';
 
 
-
 @Entity('users')
 class User {
   @PrimaryGeneratedColumn('uuid')

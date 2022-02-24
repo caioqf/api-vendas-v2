@@ -16,40 +16,27 @@ describe('UpdateCustomer', () => {
         createCustomer = new CreateCustomerService(fakeCustomersRepository);
     });
 
-    it('should be able to update a existent customer', async () => {
-        const fakeRecivedId = 'fake_uuid_v4';
+    it('should be able to update a costumer', async () => {
+      const customer = await createCustomer.execute({
+        name: 'caio',
+        email: 'existo@gmail.com'
+      });
 
-        const recivedCustomer = await fakeCustomersRepository.findById(fakeRecivedId);
-        
-        const afterUpdateCustomer = await updateCustomer.execute({
-            id: "fake_uuid_v4",
-            email: "tested@gmail.com",
-            name: 'douglas',
-        })
-
-        expect(afterUpdateCustomer).toHaveProperty('id');
-        expect(afterUpdateCustomer.name).toBe(recivedCustomer?.name)
-        expect(afterUpdateCustomer.email).toBe(recivedCustomer?.email)
-    });
-
-    it('should not be able to update a inexistent customer', () => {
+      const update = updateCustomer.execute({
+        id: customer.id,
+        name: 'change',
+        email: 'mudei@gmail.com',
+      })
+      expect(update).resolves
+   })
+    
+    it('should not be able to update a inexistent customer', async () => {
       expect(
-          updateCustomer.execute({
-              id: 'esto_non_existe',
-              name: 'caio',
-              email: 'caio@faria',
-        }),
+        updateCustomer.execute({
+          id: 'noppers',
+          name: 'noone',
+          email: 'naoexisto@gmail.com'
+        })
       ).rejects.toBeInstanceOf(AppError);
     })
-
-    it('should not be able to update to a existent email', async () => {
-      
-      const updated = await updateCustomer.execute({
-        id: 'fake_uuid_v4',
-        email: "test_diff@gmail.com",
-        name: 'caio',
-      })
-
-      expect(updated).rejects.toBeInstanceOf(AppError);
-    })
-})
+  })
