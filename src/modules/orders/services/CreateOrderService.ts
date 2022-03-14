@@ -2,8 +2,7 @@ import AppError from '@shared/errors/AppError';
 import { getCustomRepository } from 'typeorm';
 import Order from '../infra/typeorm/entities/Order';
 import OrdersRepository from '../infra/typeorm/repositories/OrdersRepository';
-import CustomerRepository from '../../customers/infra/typeorm/repositories/CustomerRepository';
-import {ProductRepository} from '../../products/infra/typeorm/repositories/ProductsRepositoriy';
+import ProductRepository from '../../products/infra/typeorm/repositories/ProductsRepositoriy';
 import { inject, injectable } from 'tsyringe';
 import { ICustomersRepository } from '@modules/customers/domain/repositories/ICustomersRepository';
 
