@@ -1,3 +1,5 @@
+API de vendas para praticar os aprendizados de REST, Typescript, PostgreSQL e Docker
+
 # Notas:
 
 ##### Imagem docker PostgreSQL: 
